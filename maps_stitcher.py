@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from geo import LatLng, LatLngBounds
 from TileMachine import TileMachine
 from TileDownloader import TileDownloader
