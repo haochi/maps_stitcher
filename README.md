@@ -1,5 +1,5 @@
-Maps Downloader
-===============
+Maps Stitcher
+=============
 
 Downloads and generates an image of a map given a latitude and longitude bounds.
 
