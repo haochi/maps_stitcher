@@ -2,6 +2,8 @@ from geo import Point, LatLng, LatLngBounds, Projection
 import urllib
 import math
 
+MAX_SIZE = 9999
+
 projection = Projection()
 
 class Tile(object):
@@ -20,27 +22,35 @@ class TileMachine(object):
     def tiles_from_bounds(self, bounds):
         primary_tiles = []
         half_way_tiles = []
-        max_x = 0
+        max_x = max_y = 0
 
         params = dict(zoom=self.zoom, scale=self.scale, size='{0}x{0}'.format(self.size))
 
-        # generate an (x, y) grid based on the given bounds
-        # then use skip_check=True to add (y+1) row and (x+1) column
-        y = 0
-        while True:
-            x = 0
-            while True:
+        """ generate an (x, y) grid based on the given bounds
+            [*][*][*]
+            [*][*][*]
+        """
+        for y in range(MAX_SIZE):
+            for x in range(MAX_SIZE):
                 if not self.add_tile(bounds, x, y, primary_tiles, half_way_tiles, params):
-                    self.add_tile(bounds, x, y, None, half_way_tiles, params, skip_check=True)
-                    max_x = x
+                    max_x = max(max_x, x)
                     break
-                x += 1
-            y += 1
-
             if not bounds.contains(self.get_latlng_from_tile_at(bounds, 0, y)):
-                for x in range(max_x + 1):
-                    self.add_tile(bounds, x, y, None, half_way_tiles, params, skip_check=True)
+                max_y = max(max_y, y)
                 break
+
+        """ then use skip_check=True to add (y+1) row and (x+1) column
+            [*][*][*][ ]
+            [*][*][*][ ]
+            [ ][ ][ ][ ]
+        """
+        for y in range(max_y):
+            self.add_tile(bounds, max_x, y, None, half_way_tiles, params, skip_check=True)
+
+        for x in range(max_x):
+            self.add_tile(bounds, x, max_y, None, half_way_tiles, params, skip_check=True)
+
+        self.add_tile(bounds, max_x, max_y, None, half_way_tiles, params, skip_check=True)
 
         return dict(primary=primary_tiles, half=half_way_tiles)
 
