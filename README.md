@@ -3,6 +3,8 @@ Maps Stitcher
 
 Downloads and generates an image of a map given a latitude and longitude bounds.
 
+You can find some [sample output on Flickr here](https://www.flickr.com/photos/haochi/sets/72157653869432590). 
+
 Environment
 -----------
 
@@ -36,8 +38,7 @@ The corresponding commands are (example):
     * `--output`: (optional, string, default=output.jpg) File name
     * `--format`: (optional, string, default=JPEG) File format ([supported formats](http://pillow.readthedocs.org/en/latest/handbook/image-file-formats.html))
 
-Example
--------
+#### Example
 
 * `./maps_stitcher.py init san_francisco --southwest=37.708894,-122.502316 --northeast=37.808034,-122.358378 --zoom=15 --scale=2`
 * `./maps_stitcher.py download san_francisco --key=ABCDEFG`
