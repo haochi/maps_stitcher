@@ -16,6 +16,7 @@ TILES_FILE_NAME = 'tiles.json'
 def download(project):
     parser = argparse.ArgumentParser()
     parser.add_argument('--key', action='store', required=True, help='Google API key')
+    parser.add_argument('--skip', action='store_true', help='Redownload existing tiles')
     args, unknown = parser.parse_known_args()
 
     project_path = path.join(os.getcwd(), project)
@@ -23,7 +24,7 @@ def download(project):
     mkpath(tiles_path)
 
     with open(path.join(project_path, TILES_FILE_NAME)) as tiles_json:
-        downloader = TileDownloader(tiles_path, json.load(tiles_json))
+        downloader = TileDownloader(tiles_path, json.load(tiles_json), args.key, args.skip)
         downloader.download()
 
 def init(project):
@@ -37,7 +38,7 @@ def init(project):
 
     project_path = path.join(os.getcwd(), project)
 
-    tile_machine = TileMachine(size=args.size, zoom=args.zoom, scale=args.scale)
+    tile_machine = TileMachine(size=args.size, zoom=args.zoom, scale=args.scale, params=unknown)
     def tiles_to_json(tiles): return map(lambda tile: { 'url': tile.url, 'x': tile.x, 'y': tile.y }, tiles)
     def parse_latlng(latlng_str): return map(lambda a: float(a), latlng_str.split(',', 2))
 

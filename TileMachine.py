@@ -13,11 +13,12 @@ class Tile(object):
         self.url = url
 
 class TileMachine(object):
-    def __init__(self, size, zoom, scale):
+    def __init__(self, size, zoom, scale, params):
         self.size = size
         self.zoom = zoom 
         self.scale = scale
         self.zoom_scale = 1 << self.zoom
+        self.extra_params = filter(lambda param: '=' in param, params)
 
     def tiles_from_bounds(self, bounds):
         primary_tiles = []
@@ -92,5 +93,5 @@ class TileMachine(object):
         base = 'https://maps.googleapis.com/maps/api/staticmap?'
         params = dict(center='{0},{1}'.format(latlng.lat, latlng.lng))
         params.update(kwargs)
-        return base + urllib.urlencode(params)
+        return '{0}{1}&{2}'.format(base, urllib.urlencode(params), '&'.join(self.extra_params))
 
