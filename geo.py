@@ -1,5 +1,7 @@
 import math
 
+EPSILON = 1e-10
+
 class LatLngBounds(object):
     def __init__(self, south_west, north_east):
         self.south_west = LatLng(south_west.lat, south_west.lng)
@@ -10,8 +12,8 @@ class LatLngBounds(object):
         sw = self.south_west
         sw2 = ne2 = latlng
 
-        return (sw2.lat >= sw.lat) and (ne2.lat <= ne.lat) and\
-               (sw2.lng >= sw.lng) and (ne2.lng <= ne.lng)
+        return gte(sw2.lat, sw.lat) and lte(ne2.lat, ne.lat) and\
+               gte(sw2.lng, sw.lng) and lte(ne2.lng, ne.lng)
 
     def getSouthWest(self):
         return LatLng(self.south_west.lat, self.south_west.lng)
@@ -53,6 +55,12 @@ class Projection(object):
         lat = ( 2 * math.atan(math.exp((point.y - self.MID_POINT.y) / - ( self.PIXELS / (2 * math.pi)))) - math.pi / 2) /(math.pi/(self.DEGREES_IN_CIRCLE/2))
         lng = (point.x - self.MID_POINT.x) / self.PIXELS_PER_DEGREE
         return LatLng(lat, lng)
+
+def gte(a, b):
+    return a > b or abs(a - b) <= EPSILON
+
+def lte(a, b):
+    return b > a or abs(a - b) <= EPSILON
 
 if __name__ == '__main__':
     p = Projection()
