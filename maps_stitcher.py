@@ -32,13 +32,14 @@ def init(project):
     parser.add_argument('--zoom', action='store', type=int, default=1, help='Zoom level between 0 (world) to 21+ (street).')
     parser.add_argument('--scale', action='store', type=int, default=1, help='Scale of image (1, 2, 4)')
     parser.add_argument('--size', action='store', type=int, default=640, help='Size of image')
+    parser.add_argument('--format', action='store', default='gif', help='File type')
     parser.add_argument('--southwest', action='store', required=True, help='Southwest latitude and longitude. e.g. --southwest=39.1,-83.2')
     parser.add_argument('--northeast', action='store', required=True, help='Northeast latitude and longitude, e.g. --northeast=40.3,-82.4')
     args, unknown = parser.parse_known_args()
 
     project_path = path.join(os.getcwd(), project)
 
-    tile_machine = TileMachine(size=args.size, zoom=args.zoom, scale=args.scale, params=unknown)
+    tile_machine = TileMachine(size=args.size, zoom=args.zoom, scale=args.scale, format=args.format, params=unknown)
     def tiles_to_json(tiles): return map(lambda tile: { 'url': tile.url, 'x': tile.x, 'y': tile.y }, tiles)
     def parse_latlng(latlng_str): return map(lambda a: float(a), latlng_str.split(',', 2))
 
@@ -68,8 +69,8 @@ def init(project):
 
 def stitch(project):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--save', action='store', default='output.jpg', help='File name')
-    parser.add_argument('--format', action='store', default='JPEG', help='File type')
+    parser.add_argument('--save', action='store', default='output.gif', help='File name')
+    parser.add_argument('--format', action='store', default='GIF', help='File type')
     args, unknown = parser.parse_known_args()
 
     project_path = path.join(os.getcwd(), project)

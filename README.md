@@ -30,13 +30,15 @@ The corresponding commands are (example):
     * `--zoom`: (optional, integer, default=1) [zoom level](https://developers.google.com/maps/documentation/staticmaps/#Zoomlevels), [1, 21+]
     * `--scale`: (optional, integer, default=1) [scale](https://developers.google.com/maps/documentation/staticmaps/#scale_values), (1, 2, 4)
     * `--size`: (option, integer, default=640) [size](https://developers.google.com/maps/documentation/staticmaps/#Imagesizes), [1, 2048]
+    * `--format`: (optional, string, default=gif) Image format ([supported formats](https://developers.google.com/maps/documentation/static-maps/intro#ImageFormats))
+
 
 * `maps_stitcher.py download PROJECT_NAME`: This will start downloading the tiles
     * `--key`: (**required**, string) [Google API key](https://developers.google.com/maps/documentation/javascript/tutorial#api_key)
 
 * `maps_stitcher.py stitch PROJECT_NAME`: This will stitch the tiles and generate the map
-    * `--output`: (optional, string, default=output.jpg) File name
-    * `--format`: (optional, string, default=JPEG) File format ([supported formats](http://pillow.readthedocs.org/en/latest/handbook/image-file-formats.html))
+    * `--save`: (optional, string, default=output.gif) File name
+    * `--format`: (optional, string, default=gif) File format ([supported formats](http://pillow.readthedocs.org/en/latest/handbook/image-file-formats.html))
 
 #### Example
 
