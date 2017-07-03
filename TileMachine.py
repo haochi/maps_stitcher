@@ -13,12 +13,13 @@ class Tile(object):
         self.url = url
 
 class TileMachine(object):
-    def __init__(self, size, zoom, scale, format, params):
+    def __init__(self, size, zoom, scale, format, maptype, params):
         self.size = size
         self.zoom = zoom 
         self.scale = scale
         self.zoom_scale = 1 << self.zoom
         self.format = format
+        self.maptype = maptype
         self.extra_params = filter(lambda param: '=' in param, params)
 
     def tiles_from_bounds(self, bounds):
@@ -27,7 +28,7 @@ class TileMachine(object):
         max_x = max_y = 0
 
         params = dict(zoom=self.zoom, scale=self.scale, size='{0}x{0}'.format(self.size),
-                      format=self.format)
+                      format=self.format, maptype=self.maptype)
 
         """ generate an (x, y) grid based on the given bounds
             [*][*][*]

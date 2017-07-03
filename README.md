@@ -31,6 +31,7 @@ The corresponding commands are (example):
     * `--scale`: (optional, integer, default=1) [scale](https://developers.google.com/maps/documentation/staticmaps/#scale_values), (1, 2, 4)
     * `--size`: (option, integer, default=640) [size](https://developers.google.com/maps/documentation/staticmaps/#Imagesizes), [1, 2048]
     * `--format`: (optional, string, default=gif) Image format ([supported formats](https://developers.google.com/maps/documentation/static-maps/intro#ImageFormats))
+    * `--maptype`: (optional, string, default=roadmap) Map type ([supported formats](https://developers.google.com/maps/documentation/static-maps/intro#MapTypes))
 
 
 * `maps_stitcher.py download PROJECT_NAME`: This will start downloading the tiles
