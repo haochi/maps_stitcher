@@ -22,7 +22,7 @@ class LatLngBounds(object):
         return LatLng(self.north_east.lat, self.north_east.lng)
 
     def __str__(self):
-        return '\t\t{0}\n{1}'.format(self.north_east, self.south_west)
+        return 'LatLngBounds({0}, {1})'.format(self.north_east, self.south_west)
 
 class LatLng(object):
     def __init__(self, lat, lng):
@@ -32,10 +32,17 @@ class LatLng(object):
     def __str__(self):
         return 'LatLng({0}, {1})'.format(self.lat, self.lng)
 
+    @staticmethod
+    def valid_latlng(latlng):
+        return abs(latlng.lat) <= 90 and abs(latlng.lng) <= 180
+
 class Point(object):
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    def __str__(self):
+        return 'Point({0}, {1})'.format(self.x, self.y)
 
 class Projection(object):
     PIXELS = float(256)

@@ -12,6 +12,9 @@ class Tile(object):
         self.y = y
         self.url = url
 
+    def __str__(self):
+        return self.url
+
 class TileMachine(object):
     def __init__(self, size, zoom, scale, format, maptype, params):
         self.size = size
@@ -62,15 +65,16 @@ class TileMachine(object):
         latlng = self.get_latlng_from_tile_at(bounds, x, y)
         half_way_latlng = self.get_latlng_half_tile_away(latlng)
 
-        if bounds.contains(latlng) or skip_check:
+        if LatLng.valid_latlng(latlng) and (bounds.contains(latlng) or skip_check):
             if primary_tiles is not None:
                 primary_tiles.append(self.latlng_to_tile(latlng, x, y, params))
-            half_way_tiles.append(self.latlng_to_tile(half_way_latlng, x, y, params))
+
+            if LatLng.valid_latlng(half_way_latlng) and (bounds.contains(half_way_latlng) or skip_check):
+                half_way_tiles.append(self.latlng_to_tile(half_way_latlng, x, y, params))
             return True
 
         return False
-
-            
+     
     def latlng_to_tile(self, latlng, x, y, params):
         url = self.generate_google_static_map_url_from_latlng(latlng, **params)
         return Tile(x, y, url)
@@ -82,7 +86,7 @@ class TileMachine(object):
         top_right = projection.fromLatLngToPoint(ne)
         bottom_left = projection.fromLatLngToPoint(sw)
         point = Point(float(x) * scale + bottom_left.x, float(y) * scale + top_right.y)
-        
+
         return projection.fromPointToLatLng(point)
 
     def get_latlng_half_tile_away(self, latlng):
@@ -91,10 +95,8 @@ class TileMachine(object):
         half_title_away = Point(half + center.x, half + center.y)
         return projection.fromPointToLatLng(half_title_away)
 
-
     def generate_google_static_map_url_from_latlng(self, latlng, **kwargs):
         base = 'https://maps.googleapis.com/maps/api/staticmap?'
         params = dict(center='{0},{1}'.format(latlng.lat, latlng.lng))
         params.update(kwargs)
         return '{0}{1}&{2}'.format(base, urllib.urlencode(params), '&'.join(self.extra_params))
-
