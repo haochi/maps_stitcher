@@ -69,7 +69,10 @@ class TileMachine(object):
             if primary_tiles is not None:
                 primary_tiles.append(self.latlng_to_tile(latlng, x, y, params))
 
-            if LatLng.valid_latlng(half_way_latlng) and (bounds.contains(half_way_latlng) or skip_check):
+            if not LatLng.valid_latlng(half_way_latlng):
+                half_way_latlng = LatLng.coerce_to_valid_latlng(half_way_latlng)
+
+            if bounds.contains(half_way_latlng) or skip_check:
                 half_way_tiles.append(self.latlng_to_tile(half_way_latlng, x, y, params))
             return True
 

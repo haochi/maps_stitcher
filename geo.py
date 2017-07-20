@@ -1,6 +1,8 @@
 import math
 
 EPSILON = 1e-10
+LAT_MAX = 90
+LNG_MAX = 180
 
 class LatLngBounds(object):
     def __init__(self, south_west, north_east):
@@ -34,7 +36,19 @@ class LatLng(object):
 
     @staticmethod
     def valid_latlng(latlng):
-        return abs(latlng.lat) <= 90 and abs(latlng.lng) <= 180
+        return abs(latlng.lat) <= LAT_MAX and abs(latlng.lng) <= LNG_MAX
+
+    @staticmethod
+    def coerce_to_valid_latlng(latlng):
+        latlng.lng = wrap_around(latlng.lng, LNG_MAX)
+        latlng.lat = wrap_around(latlng.lat, LAT_MAX)
+        return latlng
+
+def wrap_around(num, max_value):
+    if abs(num) > max_value:
+        num = max_value - abs(max_value - abs(num))
+
+    return num
 
 class Point(object):
     def __init__(self, x, y):
